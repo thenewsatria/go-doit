@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: godoit-api
+    env_file:
+      - dev.env
+    ports:
+      - "3000:3000"
+    networks:
+      - godoit-net
+    depends_on:
+      - mongodb
+    command: ./bin/go-doit
+
+  mongodb:
+    image: mongo:5.0-focal
+    container_name: godoit-mongodb
+    env_file:
+      - dev.env
+    ports:
+      - 27017:27017
+    networks:
+      - godoit-net
+    volumes:
+      - godoit-mongo:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: godoit-mongoex
+    env_file:
+      - dev.env
+    depends_on:
+      - mongodb
+    networks:
+      - godoit-net
+    ports:
+      - 8081:8081
+
+volumes:
+  godoit-mongo:
+
+networks:
+  godoit-net:
+    driver: bridge
