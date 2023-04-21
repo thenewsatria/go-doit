@@ -17,8 +17,6 @@ services:
   mongodb:
     image: mongo:5.0-focal
     container_name: godoit-mongodb
-    env_file:
-      - dev.env
     ports:
       - 27017:27017
     networks:
